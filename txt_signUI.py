@@ -4,16 +4,19 @@ import tkinter.font as tkFont
 import subprocess
 import cv2
 import text_to_sign.show_videos as show_videos
+from text_to_sign.speech_to_text import SpeechRecognizer
+import text_to_sign.Speech_to_ISL_gloss_py_final as stoi
 
 # === CONFIGURATION ===
 sentence = "loud crowd"  # DEFAULT Input glossed sentence
 DTW_SIGN_TO_TEXT_PATH = "sign_to_text/demo_dtw_newmethod.py"
+recognizer = SpeechRecognizer()
 
 # DTW Sign to Text Converter
 def run_sign_to_text_converter():
     subprocess.Popen(["python", DTW_SIGN_TO_TEXT_PATH], shell=True)
 
-def play_video(video_path): #keep in UI
+def play_video(video_path): 
     cap = cv2.VideoCapture(video_path)
     while cap.isOpened():
         ret, frame = cap.read()
@@ -27,8 +30,23 @@ def play_video(video_path): #keep in UI
     cap.release()
     cv2.destroyAllWindows()
 
-def on_generate(): #be in UI
-    sentence = entry.get().strip()
+def update_output_texts(gloss_sentence, dict_sentence):
+    # Update gloss_text
+    gloss_text.config(state='normal')
+    gloss_text.delete(1.0, tk.END)
+    gloss_text.insert(tk.END, gloss_sentence)
+    gloss_text.config(state='disabled')
+    # Update dict_text
+    dict_text.config(state='normal')
+    dict_text.delete(1.0, tk.END)
+    dict_text.insert(tk.END, dict_sentence)
+    dict_text.config(state='disabled')
+    
+def on_generate(): 
+    input_sentence = entry.get().strip()
+    gloss_sentence = stoi.text_to_isl(input_sentence) 
+    dict_sentence = gloss_sentence #PLACEHOLDER: USE SYNONYM GENERATION LOGIC FUNCTION FROM SPEECH TO ISL
+    update_output_texts(gloss_sentence, dict_sentence)
     if not sentence:
         messagebox.showerror("Error", "Please enter a sentence.")
         return
@@ -37,6 +55,20 @@ def on_generate(): #be in UI
         play_video(result)
     else:
         messagebox.showinfo("Info", "No valid videos found for input.")
+
+def on_mic_click():
+    message_label.config(text="Please Wait...", fg="blue")
+    root.update_idletasks()
+    try:
+        recognizer.setup_mic()
+        message_label.config(text="Please Speak (max 10 sec)", fg="blue")
+        root.update_idletasks()
+        text = recognizer.listen()
+        entry.delete(0, tk.END)
+        entry.insert(0, text)
+        message_label.config(text="Speech recognized.", fg="blue")
+    except Exception as e:
+        message_label.config(text=str(e), fg="red")
 
 # === UI Setup ===
 root = tk.Tk()
@@ -48,9 +80,6 @@ tk.Label(root, text="Enter a sentence or press the mic button to use speech to t
 mic_img = tk.PhotoImage(file="img/mic_24.png")  # path to mic image file
 
 # frame with mic button and entry field
-def on_mic_click():
-    pass
-
 frame = tk.Frame(root)
 frame.pack(pady=5, padx=10, fill='x')
 
