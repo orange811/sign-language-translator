@@ -6,6 +6,7 @@ import cv2
 import text_to_sign.show_videos as show_videos
 from text_to_sign.speech_to_text import SpeechRecognizer
 import text_to_sign.Speech_to_ISL_gloss_py_final as stoi
+from text_to_sign.synonym_matcher import map_gloss_sentence
 
 # === CONFIGURATION ===
 DTW_SIGN_TO_TEXT_PATH = "sign_to_text/demo_dtw_newmethod.py"
@@ -40,16 +41,25 @@ def update_output_texts(gloss_sentence, dict_sentence):
     dict_text.delete(1.0, tk.END)
     dict_text.insert(tk.END, dict_sentence)
     dict_text.config(state='disabled')
+    root.update_idletasks()
     
 def on_generate(): 
     input_sentence = entry.get().strip()
     gloss_sentence = stoi.text_to_isl(input_sentence) 
-    dict_sentence = gloss_sentence #PLACEHOLDER: USE SYNONYM GENERATION LOGIC FUNCTION FROM SPEECH TO ISL
+    
+    # ✅ Use NLP-based mapping
+    word_to_path_mapping = map_gloss_sentence(gloss_sentence)
+    dict_sentence = ""
+    for word, mapping in word_to_path_mapping.items():
+        if mapping:
+            gloss_word = mapping.split(".")[-1].strip()
+            dict_sentence += f"{word} → {gloss_word}\n"
+    # dict_sentence = gloss_sentence #PLACEHOLDER: USE SYNONYM GENERATION LOGIC FUNCTION FROM SPEECH TO ISL
     update_output_texts(gloss_sentence, dict_sentence)
-    if not dict_sentence:
+    if not input_sentence:
         messagebox.showerror("Error", "Please enter a sentence.")
         return
-    result = show_videos.select_and_merge_videos(dict_sentence)
+    result = show_videos.select_and_merge_videos(word_to_path_mapping)
     if result:
         play_video(result)
     else:

@@ -31,28 +31,25 @@ def create_output_folder():
         shutil.rmtree(OUTPUT_FOLDER)
     os.makedirs(OUTPUT_FOLDER)
 
-def select_and_merge_videos(sentence):
+def select_and_merge_videos(word_to_path_mapping):
     create_output_folder()
     selected_videos = []
 
-    words = sentence.strip().lower().split()
-    for idx, word in enumerate(words):
-        if word not in GLOSS_DICT:
-            print(f"❌ Word '{word}' not in gloss dictionary. Skipping.")
+    for word, rel_path in word_to_path_mapping.items():
+        if rel_path is None:
+            print(f"❌ Could not find mapping for word '{word}'. Skipping.")
             continue
 
-        # Resolve folder path safely
-        folder_path = find_folder_case_insensitive(DATASET_ROOT, GLOSS_DICT[word])
+        folder_path = find_folder_case_insensitive(DATASET_ROOT, rel_path)
         if not folder_path or not os.path.isdir(folder_path):
             print(f"❌ Folder not found: {folder_path}")
             continue
 
         videos = [f for f in os.listdir(folder_path) if f.lower().endswith(('.mp4', '.avi', '.mov'))]
         if not videos:
-            print(f"❌ No video in folder: {folder_path}")
+            print(f"❌ No videos in folder: {folder_path}")
             continue
 
-         # Pick one video randomly
         selected_video = os.path.join(folder_path, random.choice(videos))
         selected_videos.append(selected_video)
         print(f"✅ Selected video for '{word}': {selected_video}")
