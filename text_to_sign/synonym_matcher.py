@@ -40,8 +40,8 @@ def map_gloss_sentence(gloss_sentence):
 
     return result
 
-# Example usage
-sentence = "tiny store skin colour t-shirt"
-mapped = map_gloss_sentence(sentence)
-for word, mapping in mapped.items():
-    print(f"{word} → {mapping}")
+# # Example usage
+# gloss_sentence = "loud happy dog playing park boy fell"
+# mapped = map_gloss_sentence(gloss_sentence)
+# for word, mapping in mapped.items():
+#     print(f"{word} → {mapping}")

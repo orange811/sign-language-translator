@@ -104,6 +104,6 @@ print("Converting text to ISL gloss...")
 #     #listen
 #     audio = r.record(source)
 # speech=r.recognize_google(audio)
-
+# speech = "the loud and happy dog is playing in the park with a boy who fell down"
 # print("RAW TEXT: ", speech)
 # print("ISL GLOSS TEXT: ", text_to_isl(speech))
