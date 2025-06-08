@@ -1,0 +1,180 @@
+class,video_index,start,end
+Adjectives_7. Deaf,0,0,45
+Adjectives_7. Deaf,1,0,45
+Adjectives_7. Deaf,2,4,49
+Adjectives_7. Deaf,3,2,47
+Adjectives_7. Deaf,4,0,45
+Adjectives_7. Deaf,5,1,46
+Adjectives_7. Deaf,6,5,50
+Adjectives_7. Deaf,7,1,46
+Animals_4. Bird,0,16,61
+Animals_4. Bird,1,16,61
+Animals_4. Bird,2,7,52
+Animals_4. Bird,3,12,57
+Animals_4. Bird,4,18,63
+Animals_4. Bird,5,18,63
+Animals_4. Bird,6,18,63
+Animals_4. Bird,7,24,69
+Animals_4. Bird,8,21,66
+Animals_4. Bird,9,18,63
+Animals_4. Bird,10,22,67
+Animals_4. Bird,11,29,74
+Animals_4. Bird,12,23,68
+Animals_4. Bird,13,13,58
+Animals_4. Bird,14,21,66
+Animals_4. Bird,15,5,50
+Animals_4. Bird,16,9,54
+Animals_4. Bird,17,5,50
+Clothes_39. Suit,0,9,54
+Clothes_39. Suit,1,22,67
+Clothes_39. Suit,2,10,55
+Clothes_39. Suit,3,4,49
+Clothes_39. Suit,4,1,46
+Clothes_39. Suit,5,19,64
+Clothes_39. Suit,6,17,62
+Clothes_39. Suit,7,12,57
+Clothes_39. Suit,8,8,53
+Clothes_39. Suit,9,10,55
+Clothes_39. Suit,10,13,58
+Clothes_39. Suit,11,17,62
+Clothes_39. Suit,12,4,49
+Clothes_39. Suit,13,7,52
+Clothes_39. Suit,14,6,51
+Clothes_39. Suit,15,36,81
+Clothes_39. Suit,16,4,49
+Clothes_39. Suit,17,6,51
+Clothes_40. Skirt,0,13,58
+Clothes_40. Skirt,1,26,71
+Clothes_40. Skirt,2,14,59
+Clothes_40. Skirt,3,4,49
+Clothes_40. Skirt,4,3,48
+Clothes_40. Skirt,5,9,54
+Clothes_40. Skirt,6,15,60
+Clothes_40. Skirt,7,12,57
+Clothes_40. Skirt,8,0,45
+Clothes_40. Skirt,9,5,50
+Clothes_40. Skirt,10,3,48
+Clothes_40. Skirt,11,3,48
+Clothes_40. Skirt,12,16,61
+Clothes_40. Skirt,13,0,45
+Clothes_40. Skirt,14,2,47
+Clothes_40. Skirt,15,0,45
+Clothes_40. Skirt,16,1,46
+Clothes_40. Skirt,17,0,45
+Means_of_Transportation_16. train ticket,0,12,57
+Means_of_Transportation_16. train ticket,1,28,73
+Means_of_Transportation_16. train ticket,2,18,63
+Means_of_Transportation_16. train ticket,3,15,60
+Means_of_Transportation_16. train ticket,4,20,65
+Means_of_Transportation_16. train ticket,5,28,73
+Means_of_Transportation_16. train ticket,6,31,76
+Means_of_Transportation_16. train ticket,7,32,77
+Means_of_Transportation_16. train ticket,8,31,76
+Means_of_Transportation_16. train ticket,9,35,80
+Means_of_Transportation_16. train ticket,10,24,69
+Means_of_Transportation_16. train ticket,11,23,68
+Means_of_Transportation_16. train ticket,12,20,65
+Means_of_Transportation_16. train ticket,13,13,58
+Means_of_Transportation_16. train ticket,14,9,54
+Means_of_Transportation_16. train ticket,15,21,66
+Means_of_Transportation_16. train ticket,16,8,53
+Means_of_Transportation_16. train ticket,17,17,62
+Means_of_Transportation_16. train ticket,18,10,55
+People_66. Brother,0,7,52
+People_66. Brother,1,7,52
+People_66. Brother,2,10,55
+People_66. Brother,3,14,59
+People_66. Brother,4,11,56
+People_66. Brother,5,23,68
+People_66. Brother,6,5,50
+People_66. Brother,7,4,49
+People_66. Brother,8,7,52
+People_66. Brother,9,5,50
+People_66. Brother,10,0,45
+People_66. Brother,11,0,45
+People_66. Brother,12,5,50
+People_66. Brother,13,2,47
+People_66. Brother,14,8,53
+People_66. Brother,15,7,52
+People_66. Brother,16,14,59
+People_66. Brother,17,0,45
+People_66. Brother,18,6,51
+People_66. Brother,19,6,51
+Places_19. House,0,11,56
+Places_19. House,1,12,57
+Places_19. House,2,4,49
+Places_19. House,3,6,51
+Places_19. House,4,9,54
+Places_19. House,5,2,47
+Places_19. House,6,4,49
+Places_19. House,7,9,54
+Places_19. House,8,8,53
+Places_19. House,9,7,52
+Places_19. House,10,6,51
+Places_19. House,11,6,51
+Places_19. House,12,3,48
+Places_19. House,13,2,47
+Places_19. House,14,0,45
+Places_19. House,15,2,47
+Places_19. House,16,9,54
+Places_19. House,17,4,49
+Places_19. House,18,6,51
+Places_19. House,19,5,50
+Places_23. Court,0,9,54
+Places_23. Court,1,5,50
+Places_23. Court,2,5,50
+Places_23. Court,3,11,56
+Places_23. Court,4,16,61
+Places_23. Court,5,5,50
+Places_23. Court,6,8,53
+Places_23. Court,7,12,57
+Places_23. Court,8,4,49
+Places_23. Court,9,4,49
+Places_23. Court,10,7,52
+Places_23. Court,11,5,50
+Places_23. Court,12,12,57
+Places_23. Court,13,4,49
+Places_23. Court,14,4,49
+Places_23. Court,15,6,51
+Places_23. Court,16,4,49
+Places_23. Court,17,5,50
+Places_23. Court,18,5,50
+Places_23. Court,19,6,51
+Places_28. Store or Shop,0,4,49
+Places_28. Store or Shop,1,2,47
+Places_28. Store or Shop,2,4,49
+Places_28. Store or Shop,3,0,45
+Places_28. Store or Shop,4,5,50
+Places_28. Store or Shop,5,3,48
+Places_28. Store or Shop,6,2,47
+Places_28. Store or Shop,7,3,48
+Places_28. Store or Shop,8,0,45
+Places_28. Store or Shop,9,0,45
+Places_28. Store or Shop,10,0,45
+Places_28. Store or Shop,11,0,45
+Places_28. Store or Shop,12,0,45
+Places_28. Store or Shop,13,1,46
+Places_28. Store or Shop,14,2,47
+Places_28. Store or Shop,15,2,47
+Places_28. Store or Shop,16,1,46
+Places_28. Store or Shop,17,2,47
+Places_28. Store or Shop,18,4,49
+Places_28. Store or Shop,19,3,48
+Seasons_64. Fall,0,11,56
+Seasons_64. Fall,1,4,49
+Seasons_64. Fall,2,3,48
+Seasons_64. Fall,3,1,46
+Seasons_64. Fall,4,0,45
+Seasons_64. Fall,5,0,45
+Seasons_64. Fall,6,0,45
+Seasons_64. Fall,7,4,49
+Seasons_64. Fall,8,3,48
+Seasons_64. Fall,9,5,50
+Seasons_64. Fall,10,1,46
+Society_2. Death,0,4,49
+Society_2. Death,1,4,49
+Society_2. Death,2,23,68
+Society_2. Death,3,9,54
+Society_2. Death,4,9,54
+Society_2. Death,5,12,57
+Society_2. Death,6,6,51

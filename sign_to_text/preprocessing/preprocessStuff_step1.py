@@ -5,6 +5,10 @@ import mediapipe as mp
 from tqdm import tqdm
 
 '''Takes videos from the dataset and extracts pose landmarks into a csv from them using MediaPipe Pose.'''
+# Define the paths
+dataset_root_path =  "D:\\Neha\\BE\\final year project\\dataset include"  # Root folder for all classes
+output_csv = "D:\\Neha\\BE\\final year project\\DTW_trial\\data\\pose_landmarks_BEST_10.csv"  # Output CSV file
+# output_csv = "pose_landmarks_greetings_ALL.csv"  # if moving to datasets foledr above doesn't work
 
 # Table: Mapping from Category to Words
 # category_word_map = {
@@ -43,11 +47,6 @@ category_word_map = {
 
 # remove: shoes, summer
 # add: train ticket, deaf,house
-
-# Define the paths
-dataset_root_path =  "D:\\Neha\\BE\\final year project\\dataset include"  # Root folder for all classes
-output_csv = "D:\\Neha\\BE\\final year project\\DTW_trial\\data\\pose_landmarks_BEST_10.csv"  # Output CSV file
-# output_csv = "pose_landmarks_greetings_ALL.csv"  # if moving to datasets foledr above doesn't work
 
 # Read already processed class names if CSV exists
 processed_classes = set()   
