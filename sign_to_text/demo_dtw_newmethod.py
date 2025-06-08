@@ -15,8 +15,11 @@ from sklearn.preprocessing import MinMaxScaler
 import warnings
 warnings.filterwarnings('ignore')
 
+model_asset_path="data/pose_landmarker.task"
+dtw_templates_path = "data/dtw_templates_best_of_all.pkl"
+
 # Load DTW templates
-with open("D:\\Neha\\BE\\final year project\\DTW_trial\\data\\dtw_templates_best_of_all.pkl", "rb") as f:
+with open(dtw_templates_path, "rb") as f:
     dtw_templates = pickle.load(f)  # Format: {"label1": [seq1, seq2, ...], ...}
 
 # Initialize video capture
@@ -50,7 +53,7 @@ pointsList = [0,7,8,11,12,13,14,15,16,17,18,19,20,21,22]
 
 # Pose detector
 pose_options = vision.PoseLandmarkerOptions(
-    base_options=python.BaseOptions(model_asset_path="D:\\Neha\\BE\\final year project\\DTW_trial\\data/pose_landmarker.task")
+    base_options=python.BaseOptions(model_asset_path = model_asset_path)
 )
 pose_detector = vision.PoseLandmarker.create_from_options(pose_options)
 

@@ -4,6 +4,7 @@ import random
 import cv2
 import tkinter as tk
 from tkinter import messagebox
+import tkinter.font as tkFont
 import ast
 import subprocess
 
@@ -12,8 +13,8 @@ sentence = "loud crowd"  # DEFAULT Input glossed sentence
 DATASET_ROOT =  os.path.normpath("D:/Neha/BE/final year project/dataset include")  # Root folder of word videos
 OUTPUT_FOLDER =  os.path.normpath("D:/Neha/BE/final year project/Text to sign/OutputSentenceVideos")
 MERGED_VIDEO_PATH = os.path.join(OUTPUT_FOLDER, "merged_sentence_video.avi")
-DTW_SIGN_TO_TEXT_PATH = os.path.normpath("D:/Neha/BE/final year project/DTW_trial/demo/demo_dtw_newmethod.py")
-DICT_FILE = "D:/Neha/BE/final year project/Text to sign/gloss_dict.txt"
+DTW_SIGN_TO_TEXT_PATH = os.path.normpath("sign_to_text/demo_dtw_newmethod.py")
+DICT_FILE = "data/gloss_dict.txt"
 
 with open(DICT_FILE, "r") as f:
     GLOSS_DICT = ast.literal_eval(f.read())
@@ -164,11 +165,39 @@ def on_generate():
 
 # === UI Setup ===
 root = tk.Tk()
-root.title("ISL Gloss to Video")
+default_font = tkFont.nametofont("TkDefaultFont")
+default_font.configure(size=12)  
 
-tk.Label(root, text="Enter ISL Glossed Sentence:").pack(pady=10)
-entry = tk.Entry(root, width=50)
-entry.pack(pady=5)
+root.title("ISL Gloss to Video")
+tk.Label(root, text="Enter a sentence or press the mic button to use speech to text:").pack(pady=10)
+mic_img = tk.PhotoImage(file="img/mic_24.png")  # path to mic image file
+
+# frame with mic button and entry field
+def on_mic_click():
+    pass
+
+frame = tk.Frame(root)
+frame.pack(pady=5, padx=10, fill='x')
+
+mic_btn = tk.Button(frame, image=mic_img, command=on_mic_click)
+mic_btn.image = mic_img
+mic_btn.pack(side='left')
+
+entry = tk.Entry(frame, width=50, font  = default_font)
+entry.pack(side='left', fill='x',expand=True)
+
+# Message label
+message_label = tk.Label(root, text="", fg="black")
+message_label.pack(pady=(5, 10))
+
+# Labels and text fields for Gloss and Dictionary sentences
+tk.Label(root, text="Gloss Sentence:").pack(anchor='w', padx=10)
+gloss_text = tk.Text(root, height=3, width=50, state='disabled', bg='#f0f0f0')
+gloss_text.pack(padx=10, pady=(0, 10))
+
+tk.Label(root, text="Dictionary Sentence:").pack(anchor='w', padx=10)
+dict_text = tk.Text(root, height=3, width=50, state='disabled', bg='#f0f0f0')
+dict_text.pack(padx=10, pady=(0, 10))
 
 btn_play = tk.Button(root, text="Generate Sign & Play", command=on_generate)
 btn_play.pack(pady=15)
@@ -177,5 +206,3 @@ btn_sign = tk.Button(root, text="Sign To Text Converter", command=run_sign_to_te
 btn_sign.pack(pady=25)
 
 root.mainloop()
-
-
