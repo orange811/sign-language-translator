@@ -1,90 +1,47 @@
-import json
-import torch
+import ast
 from sentence_transformers import SentenceTransformer, util
-import re
-import itertools
 
-# Load the gloss dictionary from file
-def load_gloss_dict(path="data/gloss_dict.txt"):
-    with open(path, "r", encoding="utf-8") as file:
-        return json.load(file)
+# Load your dictionary
+DICT_FILE = "data/gloss_dict.txt"
+with open(DICT_FILE, "r", encoding="utf-8") as f:
+    GLOSS_DICT = ast.literal_eval(f.read())
 
-# Precompute embeddings for all dictionary keys
-def build_dictionary_embeddings(gloss_dict, model):
-    keys = list(gloss_dict.keys())
-    embeddings = model.encode(keys, convert_to_tensor=True)
-    return keys, embeddings
+# Create reverse mapping: key is the dict entry, value is the original gloss key
+gloss_keys = list(GLOSS_DICT.keys())
 
-# Clean and tokenize gloss sentence
-def preprocess_sentence(sentence):
-    sentence = sentence.lower()
-    sentence = re.sub(r"[^\w\s\-]", "", sentence)  # remove punct except hyphen
-    return sentence.split()
+# Load sentence transformer model (you can choose lighter if needed)
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Generate all possible contiguous word n-grams (e.g., "skin colour")
-def generate_ngrams(words, max_n=4):
-    ngrams = []
-    for n in range(max_n, 0, -1):  # Start with longest phrases first
-        ngrams += [' '.join(words[i:i + n]) for i in range(len(words) - n + 1)]
-    return ngrams
+# Create embeddings for the entire dictionary only once
+dict_embeddings = model.encode(gloss_keys, convert_to_tensor=True)
 
-# Map gloss sentence with multi-word phrase support
-def map_gloss_sentence(gloss_sentence, gloss_dict, keys, embeddings, model, threshold=0.5):
-    words = preprocess_sentence(gloss_sentence)
-    used_indices = set()
-    results = {}
+def map_gloss_sentence(gloss_sentence):
+    gloss_words = gloss_sentence.lower().split()
+    result = {}
 
-    ngrams = generate_ngrams(words, max_n=4)
-
-    for phrase in ngrams:
-        phrase_words = phrase.split()
-        start_idx = words.index(phrase_words[0])
-        end_idx = start_idx + len(phrase_words)
-
-        # Skip if these indices are already used
-        if any(i in used_indices for i in range(start_idx, end_idx)):
+    for word in gloss_words:
+        # Try exact match
+        if word in GLOSS_DICT:
+            result[word] = GLOSS_DICT[word]
             continue
-
-        phrase_embedding = model.encode(phrase, convert_to_tensor=True)
-        cosine_scores = util.cos_sim(phrase_embedding, embeddings)[0]
-        best_score, best_idx = torch.max(cosine_scores, dim=0)
-        best_score = best_score.item()
-
-        if best_score >= threshold:
-            matched_key = keys[best_idx]
-            results[phrase] = gloss_dict[matched_key]
-            used_indices.update(range(start_idx, end_idx))
-
-    # Fallback: map leftover single words not part of any ngram
-    for i, word in enumerate(words):
-        if i in used_indices:
-            continue
+        
+        # Else, find most similar word in dictionary
         word_embedding = model.encode(word, convert_to_tensor=True)
-        cosine_scores = util.cos_sim(word_embedding, embeddings)[0]
-        best_score, best_idx = torch.max(cosine_scores, dim=0)
-        best_score = best_score.item()
+        cosine_scores = util.cos_sim(word_embedding, dict_embeddings)[0]
+        best_match_id = int(cosine_scores.argmax())
+        best_score = float(cosine_scores[best_match_id])
 
+        threshold = 0.45  # You can tune this
         if best_score >= threshold:
-            matched_key = keys[best_idx]
-            results[word] = gloss_dict[matched_key]
+            best_gloss = gloss_keys[best_match_id]
+            result[word] = GLOSS_DICT[best_gloss]
         else:
-            results[word] = None
+            result[word] = None  # or leave unmapped
 
-    return results
+    return result
 
-# --- Example usage ---
-if __name__ == "__main__":
-    gloss_dict = load_gloss_dict("data/gloss_dict.txt")
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    keys, embeddings = build_dictionary_embeddings(gloss_dict, model)
-
-    gloss_sentence = "tiny store skin colour t-shirt"
-
-    result = map_gloss_sentence(gloss_sentence, gloss_dict, keys, embeddings, model)
-
-    print("Mapped Gloss Sentence to Videos:")
-    for word, video in result.items():
-        if video:
-            print(f"{word} → {video}")
-        else:
-            print(f"{word} → ❌ No match found")
+# Example usage
+sentence = "tiny store skin colour t-shirt"
+mapped = map_gloss_sentence(sentence)
+for word, mapping in mapped.items():
+    print(f"{word} → {mapping}")

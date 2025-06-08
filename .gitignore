@@ -3,4 +3,8 @@ __pycache__/
 *.py[cod]
 
 # Virtual environments
-/venv3118/
+/venv311new/
+
+/stanford-parser-full-2018-02-27
+
+*.wav

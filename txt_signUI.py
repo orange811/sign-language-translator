@@ -8,7 +8,6 @@ from text_to_sign.speech_to_text import SpeechRecognizer
 import text_to_sign.Speech_to_ISL_gloss_py_final as stoi
 
 # === CONFIGURATION ===
-sentence = "loud crowd"  # DEFAULT Input glossed sentence
 DTW_SIGN_TO_TEXT_PATH = "sign_to_text/demo_dtw_newmethod.py"
 recognizer = SpeechRecognizer()
 
@@ -47,10 +46,10 @@ def on_generate():
     gloss_sentence = stoi.text_to_isl(input_sentence) 
     dict_sentence = gloss_sentence #PLACEHOLDER: USE SYNONYM GENERATION LOGIC FUNCTION FROM SPEECH TO ISL
     update_output_texts(gloss_sentence, dict_sentence)
-    if not sentence:
+    if not dict_sentence:
         messagebox.showerror("Error", "Please enter a sentence.")
         return
-    result = show_videos.select_and_merge_videos(sentence)
+    result = show_videos.select_and_merge_videos(dict_sentence)
     if result:
         play_video(result)
     else:

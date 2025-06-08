@@ -8,7 +8,7 @@
 # python -m ipykernel install --user --name=venv311 --display-name "Python 3.11 (venv311)"
 
 # Path to input audio file
-AUDIO_FILE = ("Standard_recording_68.wav")
+AUDIO_FILE = ("data/Standard_recording_68.wav")
 
 import os
 import nltk
@@ -97,12 +97,13 @@ def text_to_isl(raw_sentence):
     return islsentence.lower().strip()
 
 
-# Speech To Text
-with sr.AudioFile(AUDIO_FILE) as source:
-    #reads the audio file. Here we use record instead of
-    #listen
-    audio = r.record(source)
-speech=r.recognize_google(audio)
+print("Converting text to ISL gloss...")
+# OLD Speech To Text trial conversion
+# with sr.AudioFile(AUDIO_FILE) as source:
+#     #reads the audio file. Here we use record instead of
+#     #listen
+#     audio = r.record(source)
+# speech=r.recognize_google(audio)
 
-print("RAW TEXT: ", speech)
-print("ISL GLOSS TEXT: ", text_to_isl(speech))
+# print("RAW TEXT: ", speech)
+# print("ISL GLOSS TEXT: ", text_to_isl(speech))

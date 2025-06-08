@@ -57,42 +57,9 @@ def select_and_merge_videos(sentence):
         selected_videos.append(selected_video)
         print(f"✅ Selected video for '{word}': {selected_video}")
 
-        # chosen = random.choice(videos)
-        # src = os.path.join(folder_path, chosen)
-        # dst = os.path.join(OUTPUT_FOLDER, f"{idx+1}_{word}.avi")
-        # shutil.copy2(src, dst)
-        # selected_videos.append(dst)
-
     if not selected_videos:
         print("❌ No videos to merge.")
         return None
-    # else:
-    #     merged = None
-    #     writer = None
-    #     for video_path in selected_videos:
-    #         cap = cv2.VideoCapture(video_path)
-    #         if not cap.isOpened():
-    #             print(f"❌ Could not open {video_path}")
-    #             continue
-
-    #         if writer is None:
-    #             width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    #             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    #             fps = int(cap.get(cv2.CAP_PROP_FPS)) or 24
-    #             fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    #             writer = cv2.VideoWriter(MERGED_VIDEO_PATH, fourcc, fps, (width, height))
-
-    #         while True:
-    #             ret, frame = cap.read()
-    #             if not ret:
-    #                 break
-    #             writer.write(frame)
-    #         cap.release()
-
-    #     if writer:
-    #         writer.release()
-    #         print(f"✅ Merged video saved at: {MERGED_VIDEO_PATH}")
-
 
     # Get frame properties
     cap = cv2.VideoCapture(selected_videos[0])
