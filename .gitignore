@@ -1,2 +1,6 @@
-*.pyc
-/venv311
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+/venv311/
