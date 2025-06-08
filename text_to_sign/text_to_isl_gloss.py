@@ -53,6 +53,7 @@ auxiliaries = {'is', 'am', 'are', 'was', 'were', 'be', 'being', 'been', 'do', 'd
 def text_to_isl(raw_sentence):
     # REMOVE hardcoded override
     # raw_sentence = " The boy is playing football with his friend."
+    print("Converting text to ISL gloss...")
 
     pattern = r'[^\w\s]'
     raw_sentence = re.sub(pattern, '', raw_sentence)
@@ -97,8 +98,8 @@ def text_to_isl(raw_sentence):
     return islsentence.lower().strip()
 
 
-print("Converting text to ISL gloss...")
 # OLD Speech To Text trial conversion
+# print("Converting text to ISL gloss...")
 # with sr.AudioFile(AUDIO_FILE) as source:
 #     #reads the audio file. Here we use record instead of
 #     #listen

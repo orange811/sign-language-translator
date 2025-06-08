@@ -1,34 +1,64 @@
 import tkinter as tk
 from tkinter import messagebox
 import tkinter.font as tkFont
+from PIL import Image, ImageTk
 import subprocess
 import cv2
-import text_to_sign.show_videos as show_videos
+import text_to_sign.generate_video as generate_video
 from text_to_sign.speech_to_text import SpeechRecognizer
-import text_to_sign.Speech_to_ISL_gloss_py_final as stoi
+import text_to_sign.text_to_isl_gloss as stoi
 from text_to_sign.synonym_matcher import map_gloss_sentence
 
 # === CONFIGURATION ===
 DTW_SIGN_TO_TEXT_PATH = "sign_to_text/demo_dtw_newmethod.py"
 recognizer = SpeechRecognizer()
+video_label = None  # global variable for video label in UI
+cap = None  # global variable for video stream
 
 # DTW Sign to Text Converter
 def run_sign_to_text_converter():
     subprocess.Popen(["python", DTW_SIGN_TO_TEXT_PATH], shell=True)
 
-def play_video(video_path): 
+def play_video(video_path):
+    global cap
     cap = cv2.VideoCapture(video_path)
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-        # Resize frame to half scale
-        frame = cv2.resize(frame, (int(frame.shape[1] / 2), int(frame.shape[0] / 2)))
-        cv2.imshow("Merged Sign Video", frame)
-        if cv2.waitKey(30) & 0xFF == ord("q"):
-            break
-    cap.release()
-    cv2.destroyAllWindows()
+    show_frame()  # Start showing frames
+
+def show_frame():
+    global cap
+    if cap is None:
+        return
+
+    ret, frame = cap.read()
+    if not ret:
+        cap.release()
+        return
+
+    # Get video_label size
+    label_w = video_label.winfo_width()
+    label_h = video_label.winfo_height()
+    if label_w < 10 or label_h < 10:
+        root.after(30, show_frame)
+        return
+
+    h, w = frame.shape[:2]
+    aspect_ratio = w / h
+
+    # Resize while maintaining aspect ratio
+    if label_w / label_h > aspect_ratio:
+        new_h = label_h
+        new_w = int(aspect_ratio * new_h)
+    else:
+        new_w = label_w
+        new_h = int(new_w / aspect_ratio)
+
+    resized_frame = cv2.resize(frame, (new_w, new_h))
+    frame_rgb = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)  # ✅ Fix color here
+    img = ImageTk.PhotoImage(Image.fromarray(frame_rgb))        # ✅ Use RGB version
+
+    video_label.config(image=img)
+    video_label.image = img
+    root.after(30, show_frame)
 
 def update_output_texts(gloss_sentence, dict_sentence):
     # Update gloss_text
@@ -59,7 +89,7 @@ def on_generate():
     if not input_sentence:
         messagebox.showerror("Error", "Please enter a sentence.")
         return
-    result = show_videos.select_and_merge_videos(word_to_path_mapping)
+    result = generate_video.select_and_merge_videos(word_to_path_mapping)
     if result:
         play_video(result)
     else:
@@ -81,41 +111,57 @@ def on_mic_click():
 
 # === UI Setup ===
 root = tk.Tk()
+root.geometry("1000x700")  # wider window for two columns
+root.resizable(True, True)
 default_font = tkFont.nametofont("TkDefaultFont")
 default_font.configure(size=12)  
 
 root.title("ISL Gloss to Video")
-tk.Label(root, text="Enter a sentence or press the mic button to use speech to text:").pack(pady=10)
+
+# === Two-column layout ===
+main_frame = tk.Frame(root)
+main_frame.pack(fill='both', expand=True)
+
+left_frame = tk.Frame(main_frame)
+left_frame.pack(side='left', fill='both', expand=True, padx=10, pady=10)
+
+right_frame = tk.Frame(main_frame, bg='black')
+right_frame.pack(side='right', fill='both', expand=True, padx=10, pady=10)
+
+# === Left Frame: Input + Buttons ===
+tk.Label(left_frame, text="Enter a sentence or press the mic button to use speech to text:").pack(pady=10)
+
 mic_img = tk.PhotoImage(file="img/mic_24.png")  # path to mic image file
 
-# frame with mic button and entry field
-frame = tk.Frame(root)
+frame = tk.Frame(left_frame)
 frame.pack(pady=5, padx=10, fill='x')
 
 mic_btn = tk.Button(frame, image=mic_img, command=on_mic_click)
 mic_btn.image = mic_img
 mic_btn.pack(side='left')
 
-entry = tk.Entry(frame, width=50, font  = default_font)
-entry.pack(side='left', fill='x',expand=True)
+entry = tk.Entry(frame, width=50, font=default_font)
+entry.pack(side='left', fill='x', expand=True)
 
-# Message label
-message_label = tk.Label(root, text="", fg="black")
+message_label = tk.Label(left_frame, text="", fg="black")
 message_label.pack(pady=(5, 10))
 
-# Labels and text fields for Gloss and Dictionary sentences
-tk.Label(root, text="Gloss Sentence:").pack(anchor='w', padx=10)
-gloss_text = tk.Text(root, height=3, width=50, state='disabled', bg='#f0f0f0')
+tk.Label(left_frame, text="Gloss Sentence:").pack(anchor='w', padx=10)
+gloss_text = tk.Text(left_frame, height=3, width=50, state='disabled', bg='#f0f0f0')
 gloss_text.pack(padx=10, pady=(0, 10))
 
-tk.Label(root, text="Dictionary Sentence:").pack(anchor='w', padx=10)
-dict_text = tk.Text(root, height=3, width=50, state='disabled', bg='#f0f0f0')
+tk.Label(left_frame, text="Dictionary Sentence:").pack(anchor='w', padx=10)
+dict_text = tk.Text(left_frame, height=3, width=50, state='disabled', bg='#f0f0f0')
 dict_text.pack(padx=10, pady=(0, 10))
 
-btn_play = tk.Button(root, text="Generate Sign & Play", command=on_generate)
+btn_play = tk.Button(left_frame, text="Generate Sign & Play", command=on_generate)
 btn_play.pack(pady=15)
 
-btn_sign = tk.Button(root, text="Sign To Text Converter", command=run_sign_to_text_converter)
+btn_sign = tk.Button(left_frame, text="Sign To Text Converter", command=run_sign_to_text_converter)
 btn_sign.pack(pady=25)
+
+# === Right Frame: Video Display ===
+video_label = tk.Label(right_frame, bg='black')
+video_label.pack(fill='both', expand=True)
 
 root.mainloop()
