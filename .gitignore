@@ -1,1 +1,6 @@
-/venv311
+# Byte-compiled / optimized / DLL files
+_pycache_/
+*.py[cod]
+
+# Virtual environments
+/venv3118/
